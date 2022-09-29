@@ -2,7 +2,7 @@
 
 **Technologies Used:** Python, Flask, Heroku
 
-**Brief Description:** Webiste for gym and weight progress tracking.
+**Brief Description:** Webiste for gym and weight progress tracking to learn Python and Web Development.
 
 **Features:**
 
