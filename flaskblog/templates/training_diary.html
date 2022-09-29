@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}"> <!-- image for user profile picture -->
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+        </div>
+      </div>
+
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ legend }}</legend>
+                <div>                <!-- BUTTONS with all the options to do -->
+                  <a class="btn btn-success btn-sm mt-1 mb-1 active" href="{{ url_for('training_diary') }}">Current Diary</a>
+                  <a class="btn btn-primary btn-sm mt-1 mb-1 active" href="{{ url_for('edit_diary') }}">Edit Diary</a>
+                  <p></p>
+                </div>
+
+                <div class="form-group">
+                  {{ form.name.label(class="form-control-label") }}:
+                  <a class="font-weight-bold">{{ form.name.data }}</a>  <!-- contains name of the training plan -->
+                  <p></p>
+
+                  <article class="media content-section border border-info rounded">
+                      <div class="media-body">
+                        <p></p>
+                        <div class="form-inline">
+                          {{ form.dates.label(class="form-control-label mr-3") }}
+                          {{ form.dates }}
+                        </div>
+                        <p></p> <!-- allows to select the date you want to see, if the date already exists in the db -->
+                        {{ form.select_date(class="btn btn-primary") }}
+                      </div>
+                  </article>
+
+
+                  <article class="media content-section border border-info rounded">
+                    <div class="media-body">
+                        {% for childform in form.exercises %} <!-- iterate every exercise-->
+                        <div class="form-inline">
+
+                          {% for field in childform %}
+
+                            {% if legend == 'Current Training Diary' %} <!-- FOR CURRENT TRAINING DIARY-->
+                                {% if field.data == 0 %} <!-- means there is a new value to be added, in this case weight and sets -->
+                                  {{ field.label(class="form-control-label") }}:
+                                  {{ field(class="form-control form-control col-lg-1") }}
+                                {% elif field.data != None %}
+                                  {% if field.label.text == 'Exercise' %} <!-- no need to change the exercise name-->
+                                    <a class="font-weight-bold">{{ field.data}}</a>
+                                  {% else %}
+                                    {{ field.label(class="form-control-label") }}:
+                                    {{ field.data }}
+                                  {% endif %}
+                                {% endif %}
+                                <a class="mr-5"></a>
+
+                            {% else %} <!-- FOR EDIT TRAINING DIARY-->
+                                {% if field.data != None %}
+                                  {% if field.label.text == 'Exercise' %} <!-- no need to change the exercise name-->
+                                    <a class="font-weight-bold">{{ field.data}}</a>
+                                  {% else %}             <!-- to edit every set, rep or weight-->
+                                    {{ field.label(class="form-control-label") }}:
+                                    {{ field(class="form-control form-control col-lg-1") }}
+                                  {% endif %}
+                                {% endif %}
+                            <a class="mr-3"></a>
+
+                            {% endif %}
+                          {% endfor %}
+
+                          </div>
+                          <p></p>
+                        {% endfor %}
+                      </div>
+                    </article>
+
+
+                </div>
+            </fieldset>
+            <div class="form-group">
+              {{ form.submit(class="btn btn-outline-info") }} <!-- SUBMIT button -->
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

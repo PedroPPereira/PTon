@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}"> <!-- image for user profile picture -->
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+        </div>
+      </div>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Diet Diary</legend>
+
+                <div class="form-group">
+
+                  <article class="media content-section border border-info rounded">
+                    <div class="media-body">
+                        {% for childform in form.diary_list %} <!-- iterate every exercise-->
+                        <div class="form-inline">
+                          {% for field in childform %}
+                                {% if field.label.text == 'Day' %}
+                                  <a class="font-weight-bold">{{ field.data}}</a>
+                                {% elif field.label.text == 'Workout?' or field.label.text == 'Calories' %}
+                                    {{ field.label(class="form-control-label") }}
+                                    <a class="mr-1"></a>
+                                    {{ field(class="form-control form-control col-sm-2") }}
+                                {% elif field.data != None %}
+                                  {{ field.label(class="form-control-label") }}
+                                  <a class="mr-1"></a>
+                                  {{ field(class="form-control form-control col-sm-1") }}
+                                {% endif %}
+                                <a class="mr-3"></a>
+
+                          {% endfor %}
+                          </div>
+                          <p></p>
+                        {% endfor %}
+                      </div>
+                    </article>
+                </div>
+            </fieldset>
+            <div class="form-group">
+              {{ form.submit(class="btn btn-outline-info") }} <!-- SUBMIT button -->
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

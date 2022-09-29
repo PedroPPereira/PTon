@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- refers to the main.css file in the static directory -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    <!-- changes marker´s name -->
+    {% if title %}
+        <title>PTon - {{ title }}</title>
+    {% else %}
+        <title>PTon</title>
+    {% endif %}
+
+    <style>
+      body  {
+        background-color: #f0f2f5;
+      }
+
+</style>
+<!-- Navigation.html-->
+</head> <!-- refers to main top menu with the login, register, home and about button -->
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="/">
+            <img src="{{ url_for('static', filename='images/'  'logo2.png') }}" width="90" height="43" alt="">
+          </a>
+          <img class="img-responsive" href="/" src=>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- Navbar Left Side -->
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}   <!-- case user is already loged in -->
+              <a class="nav-item nav-link" href="{{ url_for('current_plan') }}">Training Plan</a>
+                <a class="nav-item nav-link" href="{{ url_for('training_diary') }}">Training Diary</a>
+                <a class="nav-item nav-link" href="{{ url_for('diet_diary') }}">Diet Diary</a>
+              {% endif %}
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}   <!-- case user is already loged in -->
+                <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+              {% endif %}
+              <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- main.html -->
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <!-- refers to the update message that notifies if the registration/login was succesful or not -->
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+        <!-- refers to side column with addicional information -->
+        <div class="col-md-4">
+          <div class="content-section">
+            <h3>Content</h3>
+            <p class='text-muted'>Here you can see more scientific information on how to maximize your training.
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light">Losing weight</li>
+                <li class="list-group-item list-group-item-light">Gain muscle (hypertrophy)</li>
+                <li class="list-group-item list-group-item-light">Gain strenght</li>
+                <li class="list-group-item list-group-item-light">Lifestyle</li>
+                <li class="list-group-item list-group-item-light font-weight-bold">Find More Resources</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

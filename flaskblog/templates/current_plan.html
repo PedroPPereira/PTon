@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}"> <!-- image for user profile picture -->
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+        </div>
+      </div>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Current Training Plan</legend>
+                <div>              <!-- BUTTONS with all the options to do -->
+                  <a class="btn btn-success btn-sm mt-1 mb-1 active" href="{{ url_for('current_plan') }}">Current Plan</a>
+                  <a class="btn btn-primary btn-sm mt-1 mb-1 active" href="{{ url_for('training_plan') }}">New Plan</a>
+                  <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete Plan</button>
+                  <p></p>
+                </div>
+
+                <div class="form-group">
+                  {{ form.name.label(class="form-control-label") }}:
+                  <a class="font-weight-bold">{{ form.name.data }}</a>  <!-- contains name of the training plan -->
+                  <p></p>
+
+                  {% for childform in form.exercises %} <!-- iterate every exercise-->
+                    <article class="media content-section border border-info rounded">
+                      <div class="media-body">
+                        <a class="btn btn-outline-info mb-4 ">{{ loop.index }}</a> <!-- info button with exercise number-->
+                        
+                        <div class="form-inline">
+                        {% for field in childform %}
+                         <!-- shows all exercise information like name, sets and reps-->
+                            {% if field.data != None %} <!-- (nao mostra o weight pq varia com o dia e se foi executado ou nao)-->
+                              {{ field.label(class="form-control-label") }}:
+                              {{ field.data }}
+                            {% endif %}
+                            <a class="mr-3"></a>
+                        {% endfor %}
+                        </div>
+
+                      </div>
+                    </article>
+                  {% endfor %}
+
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Modal --> <!-- message box to make sure the user wants to delete the plan-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <form action="{{ url_for('delete_plan') }}" method="POST">
+              <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

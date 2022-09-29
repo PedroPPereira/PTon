@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}"> <!-- image for user profile picture -->
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+        </div>
+      </div>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">New Training Plan</legend>
+                <div>              <!-- BUTTONS with all the options to do -->
+                  <a class="btn btn-success btn-sm mt-1 mb-1 active" href="{{ url_for('current_plan') }}">Current Plan</a>
+                  <a class="btn btn-primary btn-sm mt-1 mb-1 active" href="{{ url_for('training_plan') }}">New Plan</a>
+                  <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete Plan</button>
+                  <p></p>
+                </div>
+
+                <div class="form-group">
+                  {{ form.name.label(class="form-control-label") }} {{ form.name(class="form-control form-control") }}  <!-- tcontains name of the training plan -->
+                  <p></p>
+                  {{ form.add_exercise(class="btn btn-primary btn-rounded") }} <!-- button to add exercises-->
+                  <p></p>
+
+                  {% for childform in form.exercises %} <!-- iterate every exercise-->
+                    <article class="media content-section border border-info rounded">
+                      <div class="media-body">
+                        <a class="btn btn-outline-info mb-4 ">{{ loop.index }}</a> <!-- info button with exercise number-->
+
+                        {% for field in childform %}
+                          <div class="form-inline"> <!-- shows all exercise information like name, sets and reps-->
+                            {{ field.label(class="form-control-label mr-3") }}
+                            {{ field(class="form-control form-control") }}
+                          </div>
+                          <p></p>
+                        {% endfor %}
+
+                      </div>
+                    </article>
+                  {% endfor %}
+
+                </div>
+            </fieldset>
+            <!-- SUBMIT button -->
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal --> <!-- message box to make sure the user wants to delete the plan-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <form action="{{ url_for('delete_plan') }}" method="POST">
+              <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
