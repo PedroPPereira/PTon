@@ -1,8 +1,8 @@
 # PTon Website
 
-**Technologies Used:** Python, Flask, Heroku
+**Technologies Used:** Python, Flask, Heroku (for deployment)
 
-**Brief Description:** Webiste for gym and weight progress tracking to learn Python and Web Development.
+**Brief Description:** Webiste for gym and weight progress tracking to learn the concepts of Python and Web Development.
 
 **Features:**
 
